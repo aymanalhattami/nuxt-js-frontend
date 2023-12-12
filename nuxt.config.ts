@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      appURL: "http://locahost:8000",
+      appURL: "http://localhost:8000",
     },
   },
   routeRules: {
