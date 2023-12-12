@@ -18,11 +18,8 @@ const form = ref({
 });
 
 async function login(payload: LoginPayload){
-    // console.log(payload);
-    await axios.post('/login', payload).then(function(response){
-        console.log('response');
-        console.log(response);
-    });
+    await axios.post('/login', payload);
+    useRouter().push('/me');
 }
 </script>
 <template>
