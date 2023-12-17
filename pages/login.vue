@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Login from "~/pages/login.vue";
 import axios from "axios";
 
 definePageMeta({
-  layout: "centered",
+    layout: "centered",
+    middleware: ['guest']
 });
 
 interface LoginPayload

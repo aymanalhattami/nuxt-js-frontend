@@ -1,4 +1,7 @@
 <script setup>
+definePageMeta({
+    middleware: ['auth']
+})
 import axios from "axios";
 
 const { data:user } = await axios.get('/user');
