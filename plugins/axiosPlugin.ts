@@ -13,3 +13,4 @@ export default defineNuxtPlugin(async (nuxtApp) => {
         baseURL: config.public.appURL
     });
 })
+
