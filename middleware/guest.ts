@@ -1,11 +1,10 @@
 import axios from "axios";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    try{
-        const {data: user} = await axios.get('/user');
+    const {user, initUser} = useAuth();
 
-        if(user){
-            return navigateTo('/me');
-        }
-    }catch(e) {}
+    await initUser();
+
+    if(user.value)
+        return navigateTo('/me');
 });
