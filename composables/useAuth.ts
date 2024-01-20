@@ -1,6 +1,35 @@
 import axios from "axios";
 
 export const useAuth = () => {
+    interface User {
+        id: number;
+        name: string;
+        email: string;
+        email_verified_at?: Date;
+        two_factor_confirmed_at?: Date;
+        two_factor_recovery_codes?: number;
+        two_factor_secret?: string;
+        updated_at: Date;
+        created_at: Date;
+    }
+
+    async function getUser(): Promise<User | null> {
+        try {
+            let response = await axios.get('/user');
+            let user = response.data;
+
+            return {
+                ...user,
+                created_at: new Date(user.created_at),
+                updated_at: new Date(user.updated_at),
+                email_verified_at: user.email_verified_at ? new Date(user.email_verified_at) : null,
+                two_factor_confirmed_at: user.two_factor_confirmed_at ? new Date(user.two_factor_confirmed_at) : null,
+            };
+        } catch (err) {
+            return null;
+        }
+    }
+
     interface LoginPayload
     {
         email: string;
