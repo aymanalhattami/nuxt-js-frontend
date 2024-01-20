@@ -2,6 +2,7 @@
 import axios, {AxiosError} from "axios";
 import {LoginPayload} from "~/types";
 import {FormKitNode} from "@formkit/core";
+import {handleInvalidForm} from "utils";
 
 definePageMeta({
     layout: "centered",
@@ -24,9 +25,7 @@ async function handleLogin(payload: LoginPayload, node: FormKitNode){
     try {
         await login(payload)
     }catch (e) {
-        if(e instanceof AxiosError && e.response?.status === 422){
-            node.setErrors([], e.response.data.errors);
-        }
+        handleInvalidForm(e, node);
     }
 }
 

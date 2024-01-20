@@ -2,6 +2,7 @@
 import {RegisterPayload} from "~/types";
 import {FormKitNode} from "@formkit/core";
 import {AxiosError} from "axios";
+import {handleInvalidForm} from "utils";
 
 definePageMeta({
   layout: "centered",
@@ -20,9 +21,7 @@ async function handleRegister(payload: RegisterPayload, node: FormKitNode){
     try{
         await register(payload);
     }catch (e) {
-        if(e instanceof AxiosError && e.response?.status === 422){
-            node.setErrors([], e.response.data.errors);
-        }
+        handleInvalidForm(e, node);
     }
 }
 
