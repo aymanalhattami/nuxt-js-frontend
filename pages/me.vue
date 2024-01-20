@@ -2,11 +2,8 @@
 definePageMeta({
     middleware: ['auth']
 })
-import axios from "axios";
 
-const { data:user } = await axios.get('/user');
-
-console.log(user);
+const {user} = useAuth()
 </script>
 
 <template>

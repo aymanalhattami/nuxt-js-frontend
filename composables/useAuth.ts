@@ -1,19 +1,23 @@
 import axios from "axios";
 
-export const useAuth = () => {
-    interface User {
-        id: number;
-        name: string;
-        email: string;
-        email_verified_at?: Date;
-        two_factor_confirmed_at?: Date;
-        two_factor_recovery_codes?: number;
-        two_factor_secret?: string;
-        updated_at: Date;
-        created_at: Date;
-    }
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    email_verified_at?: Date;
+    two_factor_confirmed_at?: Date;
+    two_factor_recovery_codes?: number;
+    two_factor_secret?: string;
+    updated_at: Date;
+    created_at: Date;
+}
 
+const user = ref<User | null>(null);
+
+export const useAuth = () => {
     async function getUser(): Promise<User | null> {
+        if(user.value) return user.value;
+
         try {
             let response = await axios.get('/user');
             let user = response.data;
@@ -28,6 +32,10 @@ export const useAuth = () => {
         } catch (err) {
             return null;
         }
+    }
+
+    async function initUser() {
+        user.value = await getUser();
     }
 
     interface LoginPayload
@@ -62,12 +70,15 @@ export const useAuth = () => {
     // logout
     async function logout(){
         await axios.post('/logout');
+        user.value = null;
         useRouter().replace('/login');
     }
 
     return {
         login,
         register,
-        logout
+        logout,
+        initUser,
+        user,
     };
 };
