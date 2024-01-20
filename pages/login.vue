@@ -2,7 +2,7 @@
 import axios, {AxiosError} from "axios";
 import {LoginPayload} from "~/types";
 import {FormKitNode} from "@formkit/core";
-import {handleInvalidForm} from "utils";
+import {handleInvalidForm} from "~/utils";
 
 definePageMeta({
     layout: "centered",

@@ -12,8 +12,9 @@ export default defineNuxtConfig({
       appURL: "http://127.0.0.1:8000",
     },
   },
-  routeRules: {
-    "/profiles/*": { swr: true },
-    "/*": { ssr: false },
-  },
+  ssr:false
+  // routeRules: {
+  //   "/profiles/*": { swr: true },
+  //   "/*": { ssr: false },
+  // },
 });
