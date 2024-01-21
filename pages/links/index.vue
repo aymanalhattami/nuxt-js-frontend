@@ -4,19 +4,26 @@ import {TailwindPagination} from "laravel-vue-pagination";
 import {Link, PaginatedResponse} from "~/types";
 
 const data = ref<PaginatedResponse<Link> | null>(null);
-const page = ref(useRoute().query.page || 1);
+
+const queries = ref({
+    page: 1,
+    "filter[full_link]": "",
+    ...useRoute().query
+});
 
 await getLinks();
 
 let links = computed(() => data.value?.data);
 
-watch(page, async () => {
+watch(queries, async () => {
     getLinks();
-    useRouter().push({query: {page: page.value}});
-});
+    useRouter().push({query: queries.value});
+}, {deep: true});
 
 async function getLinks(){
-    const {data: res} = await axios.get(`/links?page=${page.value}`);
+    // @ts-expect-error
+    const qs = new URLSearchParams(queries.value).toString();
+    const {data: res} = await axios.get(`/links?${qs}`);
     data.value = res;
 }
 
@@ -30,7 +37,7 @@ definePageMeta({
     <nav class="flex justify-between mb-4 items-center">
       <h1 class="mb-0">My Links</h1>
       <div class="flex items-center">
-        <SearchInput modelValue="" />
+        <SearchInput v-model="queries['filter[full_link]']" />
         <NuxtLink to="/links/create" class="ml-4">
           <IconPlusCircle class="inline" /> Create New
         </NuxtLink>
@@ -84,7 +91,7 @@ definePageMeta({
           </tr>
         </tbody>
       </table>
-        <TailwindPagination :data="data" @pagination-change-page="page = $event" />
+        <TailwindPagination :data="data" @pagination-change-page="queries.page = $event" />
       <div class="mt-5 flex justify-center"></div>
     </div>
 
